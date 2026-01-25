@@ -81,6 +81,29 @@
         </footer>
     </div>
 
+    <!-- Chatbot -->
+    <button class="chat-toggle" id="chatToggle" aria-label="Åpne chat">
+        <span class="chat-icon">💬</span>
+    </button>
+
+    <div class="chat-container" id="chatContainer">
+        <div class="chat-header">
+            <h3>Spør meg om noe</h3>
+            <button class="chat-close" id="chatClose" aria-label="Lukk chat">✕</button>
+        </div>
+        <div class="chat-messages" id="chatMessages">
+            <div class="chat-message bot">
+                <p>Hei! Jeg er Jonas sin AI-assistent. Spør meg gjerne om Jonas, studiene hans, eller prosjektene hans.</p>
+            </div>
+        </div>
+        <form class="chat-input-form" id="chatForm">
+            <input type="text" class="chat-input" id="chatInput" placeholder="Skriv en melding..." autocomplete="off">
+            <button type="submit" class="chat-send" id="chatSend" aria-label="Send melding">
+                <span>→</span>
+            </button>
+        </form>
+    </div>
+
     <script src="script.js"></script>
 </body>
 </html>

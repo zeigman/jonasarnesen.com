@@ -1,0 +1,10 @@
+name = "jonas-chatbot"
+main = "worker.js"
+compatibility_date = "2024-01-01"
+
+# Endre dette til din egen Cloudflare-konto subdomain
+# workers_dev = true betyr at den deployes til <name>.<subdomain>.workers.dev
+workers_dev = true
+
+# API-nøkkelen legges til som secret:
+# wrangler secret put ANTHROPIC_API_KEY
