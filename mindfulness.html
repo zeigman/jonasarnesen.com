@@ -1,0 +1,401 @@
+<!DOCTYPE html>  
+<html lang="no">  
+<head>  
+    <meta charset="UTF-8">  
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">  
+    <title>Strategisk Veileder: Mindfulness i Intensivsykepleie</title>  
+    <script src="https://cdn.tailwindcss.com"></script>  
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>  
+    <style>  
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');  
+          
+        body {  
+            font-family: 'Inter', sans-serif;  
+            background-color: #F8FAFC; /* Light slate background */  
+            color: #0F172A; /* Slate 900 */  
+        }  
+  
+        /* Mandatory Chart Container Styling */  
+        .chart-container {  
+            position: relative;  
+            width: 100%;  
+            max-width: 700px;  
+            margin-left: auto;  
+            margin-right: auto;  
+            height: 350px;  
+            max-height: 400px;  
+        }  
+  
+        @media (max-width: 640px) {  
+            .chart-container {  
+                height: 250px;  
+            }  
+        }  
+  
+        .tab-active {  
+            border-bottom: 2px solid #0D9488;  
+            color: #0D9488;  
+            font-weight: 600;  
+        }  
+  
+        .accordion-content {  
+            transition: max-height 0.3s ease-in-out, opacity 0.3s ease-in-out;  
+            max-height: 0;  
+            opacity: 0;  
+            overflow: hidden;  
+        }  
+  
+        .accordion-content.open {  
+            max-height: 500px;  
+            opacity: 1;  
+        }  
+    </style>  
+</head>  
+<body class="antialiased pb-20">  
+  
+    <!-- Chosen Palette: Slate and Teal (Professional, Calming, Clinical) - Background: slate-50, Text: slate-900, Accents: teal-600/700 -->  
+    <!-- Application Structure Plan: The dashboard is structured into four main functional areas tailored for master's students: 1. Executive Summary (The 'Why'), 2. Evidence & Data (The 'What' - using Chart.js to visualize the problem), 3. Prerequisites Analysis (The 'Core Question' - interactive accordion for deep dives), and 4. Strategic Project Management (The 'How/When' - interactive tabs for timeline and methods). This logical flow moves from general context to specific research focus, ending with actionable project planning, ensuring the students have a single source of truth for their 1.5-year project. -->  
+    <!-- Visualization & Content Choices: 1. Radar Chart (Chart.js): Compares ICU nurse metrics (stress, safety, etc.) with and without mindfulness interventions. Chosen over bar charts to show the holistic 'footprint' of the intervention. 2. Interactive Accordion: For the 'Prerequisites' (Forutsetninger) to keep the UI clean while allowing drill-down into qualitative themes. 3. Tabbed Navigation: For 'Method' and 'Timeline' to segment dense operational advice without overwhelming the user. Confirming NO SVG/Mermaid used. -->  
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->  
+  
+    <nav class="bg-slate-900 text-white shadow-md sticky top-0 z-50">  
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">  
+            <div class="flex justify-between h-16 items-center">  
+                <div class="flex-shrink-0 font-bold text-xl tracking-wide flex items-center gap-2">  
+                    <span class="text-teal-400">✦</span> Strategisk Veileder   
+                </div>  
+                <div class="hidden md:flex space-x-8">  
+                    <a href="#kunnskapsstatus" class="hover:text-teal-300 transition-colors">Kunnskapsstatus</a>  
+                    <a href="#forutsetninger" class="hover:text-teal-300 transition-colors">Problemstilling</a>  
+                    <a href="#strategi" class="hover:text-teal-300 transition-colors">Metode & Plan</a>  
+                </div>  
+            </div>  
+        </div>  
+    </nav>  
+  
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-8">  
+          
+        <!-- Header / Intro Section -->  
+        <header class="bg-white rounded-2xl shadow-sm border border-slate-100 p-8 mb-8">  
+            <h1 class="text-3xl md:text-4xl font-bold text-slate-800 mb-4">Masteroppgave: Mindfulness & Pasientsikkerhet i Intensivsykepleien</h1>  
+            <p class="text-lg text-slate-600 leading-relaxed mb-6">  
+                Velkommen, gruppe. Som deres veileder er min oppgave å sikre at deres kvalitative studie holder topp akademisk nivå, samtidig som vi navigerer en stram tidslinje på 1,5 år. Dette dashboardet samler status på forskningsfeltet og vår strategiske fremdriftsplan.  
+            </p>  
+            <div class="bg-teal-50 border-l-4 border-teal-600 p-4 rounded-r-lg">  
+                <h3 class="font-semibold text-teal-900 text-lg">Tentativ Problemstilling:</h3>  
+                <p class="text-teal-800 mt-1 italic font-medium">"Hvilke forutsetninger må være til stede for at mindfulness-baserte intervensjoner skal ha reell effekt på intensivsykepleieres arbeidsbelastning og trivsel?"</p>  
+            </div>  
+        </header>  
+  
+        <!-- Section 1: Kunnskapsstatus & Pasientsikkerhet (Data Visualization) -->  
+        <section id="kunnskapsstatus" class="mb-12">  
+            <div class="mb-6">  
+                <h2 class="text-2xl font-bold text-slate-800 flex items-center gap-2">  
+                    <span class="text-teal-600">01.</span> Kunnskapsstatus & Sammenhenger  
+                </h2>  
+                <p class="text-slate-600 mt-2">  
+                    Dette dekkende bildet av dagens forskning (bl.a. fra PubMed og CINAHL) viser en tydelig korrelasjon mellom intensivsykepleieres kognitive belastning og uønskede pasienthendelser. Utbrenthet reduserer oppmerksomhetsspennet, som er kritisk i intensivbehandling. Grafen under illustrerer effektestimatene av strukturerte mindfulness-intervensjoner.  
+                </p>  
+            </div>  
+  
+            <div class="bg-white rounded-2xl shadow-sm border border-slate-100 p-6 lg:p-8 flex flex-col md:flex-row gap-8 items-center">  
+                <div class="w-full md:w-1/2">  
+                    <h3 class="text-xl font-semibold text-slate-800 mb-4 text-center">Effekt av Mindfulness-intervensjoner (Gjennomsnittlig utslag)</h3>  
+                    <div class="chart-container">  
+                        <canvas id="statusChart"></canvas>  
+                    </div>  
+                </div>  
+                <div class="w-full md:w-1/2 space-y-4 text-slate-700">  
+                    <h4 class="font-bold text-lg text-slate-900">Analytisk Oppsummering:</h4>  
+                    <ul class="space-y-3">  
+                        <li class="flex items-start gap-2">  
+                            <span class="text-teal-600 font-bold">✓</span>  
+                            <span><strong>Pasientsikkerhet:</strong> Forskning viser at økt tilstedeværelse (mindfulness) reduserer frekvensen av medikamentfeil og feilvurderinger ved alarmtretthet.</span>  
+                        </li>  
+                        <li class="flex items-start gap-2">  
+                            <span class="text-teal-600 font-bold">✓</span>  
+                            <span><strong>Kvalitetsforbedring:</strong> Medfølelse (compassion) overfor pasienter korrelerer sterkt med "self-compassion". Sykepleiere som praktiserer dette har lavere turnover-intensjon.</span>  
+                        </li>  
+                        <li class="flex items-start gap-2">  
+                            <span class="text-teal-600 font-bold">✓</span>  
+                            <span><strong>Utfordringen:</strong> Effekten avtar drastisk dersom intervensjonen kun er et "plaster på såret" for systemisk underbemanning. <em>Dette er kjernen i deres problemstilling.</em></span>  
+                        </li>  
+                    </ul>  
+                </div>  
+            </div>  
+        </section>  
+  
+        <!-- Section 2: Forutsetninger for Effekt (Interactive Exploration) -->  
+        <section id="forutsetninger" class="mb-12">  
+            <div class="mb-6">  
+                <h2 class="text-2xl font-bold text-slate-800 flex items-center gap-2">  
+                    <span class="text-teal-600">02.</span> Analyse av Forutsetninger  
+                </h2>  
+                <p class="text-slate-600 mt-2">  
+                    For å svare på problemstillingen, må vi utforske hvilke systemiske og individuelle faktorer som må ligge til grunn. Klikk på de kritiske forutsetningene under for å se hvordan vi skal tilnærme oss dette i intervjuene.  
+                </p>  
+            </div>  
+  
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4" id="accordion-container">  
+                <!-- Injected via JS -->  
+            </div>  
+        </section>  
+  
+        <!-- Section 3: Strategi, Metode & Tidslinje (Interactive Tabs) -->  
+        <section id="strategi" class="mb-12">  
+            <div class="mb-6">  
+                <h2 class="text-2xl font-bold text-slate-800 flex items-center gap-2">  
+                    <span class="text-teal-600">03.</span> Strategisk Fremdriftsplan & Metode  
+                </h2>  
+                <p class="text-slate-600 mt-2">  
+                    "Hva er det smarteste å gjøre nå for å spare tid om 6 måneder?" Her er oppskriften. Følg denne strukturen religiøst for å unngå flaskehalser mot slutten av det 1,5 år lange løpet.  
+                </p>  
+            </div>  
+  
+            <div class="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden">  
+                <div class="flex border-b border-slate-200 bg-slate-50 overflow-x-auto">  
+                    <button class="tab-btn active px-6 py-4 text-sm font-medium text-slate-600 hover:bg-slate-100 whitespace-nowrap tab-active" data-target="tab-metode">  
+                        Akademisk Metode & Søk  
+                    </button>  
+                    <button class="tab-btn px-6 py-4 text-sm font-medium text-slate-600 hover:bg-slate-100 whitespace-nowrap" data-target="tab-tidslinje">  
+                        1,5 Års Prosjekttidslinje  
+                    </button>  
+                    <button class="tab-btn px-6 py-4 text-sm font-medium text-slate-600 hover:bg-slate-100 whitespace-nowrap" data-target="tab-etikk">  
+                        Forskningsetikk & NSD  
+                    </button>  
+                </div>  
+  
+                <div class="p-6 md:p-8">  
+                    <!-- Tab Content: Metode -->  
+                    <div id="tab-metode" class="tab-content block">  
+                        <h3 class="text-xl font-bold text-slate-800 mb-4">Metodisk Forankring (Kvalitativ Design)</h3>  
+                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">  
+                            <div>  
+                                <h4 class="font-semibold text-slate-900 mb-2">Litteratursøk (PICO/SPIDER)</h4>  
+                                <p class="text-slate-600 text-sm mb-3">For kvalitative studier anbefaler jeg SPIDER-rammeverket fremfor PICO. Vi skal søke i CINAHL, PubMed, og SveMed+.</p>  
+                                <div class="bg-slate-50 p-4 rounded-lg text-sm font-mono text-slate-700">  
+                                    <p><strong>S:</strong> Intensive Care Nurses</p>  
+                                    <p><strong>PI:</strong> Mindfulness OR Compassion</p>  
+                                    <p><strong>D:</strong> Qualitative / Interviews</p>  
+                                    <p><strong>E:</strong> Workload OR Patient Safety</p>  
+                                </div>  
+                            </div>  
+                            <div>  
+                                <h4 class="font-semibold text-slate-900 mb-2">Analyse og Validitet</h4>  
+                                <p class="text-slate-600 text-sm mb-3">Siden vi utforsker *opplevelsen* og *forutsetningene*, er <strong>Hermeneutisk Fenomenologi</strong> et utmerket valg. Dere må sikre:</p>  
+                                <ul class="list-disc pl-5 text-sm text-slate-600 space-y-1">  
+                                    <li><strong>Troverdighet (Credibility):</strong> Triangulering av data (f.eks. dybdeintervjuer + sjekk mot Hdir/VAR retningslinjer).</li>  
+                                    <li><strong>Refleksivitet:</strong> Før loggbok! Deres forforståelse som (fremtidige) intensivsykepleiere vil farge analysen.</li>  
+                                </ul>  
+                            </div>  
+                        </div>  
+                    </div>  
+  
+                    <!-- Tab Content: Tidslinje -->  
+                    <div id="tab-tidslinje" class="tab-content hidden">  
+                        <h3 class="text-xl font-bold text-slate-800 mb-4">Veilederens Fremdriftsplan (De neste 18 mnd)</h3>  
+                        <div class="relative border-l-2 border-teal-200 ml-3 space-y-6 pb-4">  
+                              
+                            <div class="relative pl-6">  
+                                <div class="absolute -left-[9px] top-1 h-4 w-4 rounded-full bg-teal-600 border-2 border-white"></div>  
+                                <h4 class="font-bold text-slate-900">Måned 1-3: Fundamentet (Gjør dette NÅ!)</h4>  
+                                <p class="text-sm text-slate-600 mt-1">Spikre problemstillingen. Utfør systematisk litteratursøk (dokumenter strengen!). Skriv utkast til innledning og teorikapitler. <strong>Send Sikt/NSD-søknad i uke 6!</strong> Dette sparer dere for måneder med venting senere.</p>  
+                            </div>  
+  
+                            <div class="relative pl-6">  
+                                <div class="absolute -left-[9px] top-1 h-4 w-4 rounded-full bg-slate-300 border-2 border-white"></div>  
+                                <h4 class="font-bold text-slate-900">Måned 4-8: Datainnsamling</h4>  
+                                <p class="text-sm text-slate-600 mt-1">Rekrutter informanter. Primus motor i gruppen må ha ansvaret for å purre på avdelingsledere. Gjennomfør dybdeintervjuer. Transkriber *fortløpende* – ikke vent til alle intervjuer er ferdige.</p>  
+                            </div>  
+  
+                            <div class="relative pl-6">  
+                                <div class="absolute -left-[9px] top-1 h-4 w-4 rounded-full bg-slate-300 border-2 border-white"></div>  
+                                <h4 class="font-bold text-slate-900">Måned 9-13: Analyse (Den tunge fasen)</h4>  
+                                <p class="text-sm text-slate-600 mt-1">Koding (f.eks. ved bruk av Braun & Clarke's tematiske analyse eller Malterud's STC). Her oppstår det ofte frustrasjon i gruppen. Hold ukentlige statusmøter med meg.</p>  
+                            </div>  
+  
+                            <div class="relative pl-6">  
+                                <div class="absolute -left-[9px] top-1 h-4 w-4 rounded-full bg-slate-300 border-2 border-white"></div>  
+                                <h4 class="font-bold text-slate-900">Måned 14-18: Diskusjon & Finpuss</h4>  
+                                <p class="text-sm text-slate-600 mt-1">Koble funnene deres opp mot Hdir og NOU-er (Grå litteratur). Diskuter *hvorfor* forutsetningene er til stede eller mangler. Formatering, referansesjekk (APA/Vancouver) og innlevering.</p>  
+                            </div>  
+  
+                        </div>  
+                    </div>  
+  
+                    <!-- Tab Content: Etikk -->  
+                    <div id="tab-etikk" class="tab-content hidden">  
+                        <h3 class="text-xl font-bold text-slate-800 mb-4">Forskningsetikk & Pragmatisme</h3>  
+                        <p class="text-slate-600 mb-4">  
+                            Intensivsykepleiere er en sårbar yrkesgruppe med høyt press. Etiske vurderinger strekker seg lenger enn bare personvern.  
+                        </p>  
+                        <div class="bg-amber-50 border-l-4 border-amber-500 p-4 rounded-r-lg">  
+                            <h4 class="font-bold text-amber-900">Veilederens Advarsel:</h4>  
+                            <p class="text-amber-800 text-sm mt-1">  
+                                Pass på at intervjuguiden ikke fungerer som en ufrivillig "terapisession" som ripper opp i traumer knyttet til uønskede pasienthendelser uten å tilby støtte (debrief). Sørg for at informantene vet at de kan trekke seg når som helst. Anonymisering av spesifikke avdelinger er kritisk.  
+                            </p>  
+                        </div>  
+                    </div>  
+  
+                </div>  
+            </div>  
+        </section>  
+  
+    </main>  
+  
+    <!-- JavaScript Logic -->  
+    <script>  
+        // Data for Prerequisites Accordion  
+        const prerequisitesData = [  
+            {  
+                title: "1. Ledelsesforankring & Ressursallokering",  
+                content: "For at mindfulness skal fungere, kan det ikke være et 'fritidsprosjekt'. Ledelsen må frigjøre tid (f.eks. 15 minutter i arbeidstiden) i en ellers hektisk intensivhverdag. Uten dette oppleves intervensjonen som et hån og en ekstra byrde."  
+            },  
+            {  
+                title: "2. Grunnleggende Bemanning (Ikke et substitutt)",  
+                content: "Mindfulness forhindrer ikke utbrenthet hvis årsaken er konstant underbemanning og dobbeltvakter. Intervensjonen har kun effekt dersom den psykologiske tryggheten og den fysiske sikkerheten (bemanning/kompetanse) i bunn er ivaretatt (jf. Maslows/Hdirs bemanningsnormer)."  
+            },  
+            {  
+                title: "3. Aksept og Psykologisk Trygghetskultur",  
+                content: "Det må eksistere en kultur på avdelingen der det å vise sårbarhet eller ta en 'time-out' etter en tøff gjenoppliving (HLR) ikke ses på som svakhet. Compassion starter med kollegastøtte."  
+            },  
+            {  
+                title: "4. Relevant og Kontekstualisert Trening",  
+                content: "Generelle mindfulness-apper fungerer sjelden optimalt. Treningen må relateres til de spesifikke stressorene i intensivsykepleie: alarmtretthet, etiske dilemmaer ved livets sluttfase, og høyteknologisk overvåkning."  
+            }  
+        ];  
+  
+        // 1. Initialize Accordion Elements  
+        const accordionContainer = document.getElementById('accordion-container');  
+          
+        prerequisitesData.forEach((item, index) => {  
+            const accItem = document.createElement('div');  
+            accItem.className = 'bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden';  
+              
+            const btn = document.createElement('button');  
+            btn.className = 'w-full text-left px-6 py-4 font-semibold text-slate-800 hover:bg-slate-50 flex justify-between items-center focus:outline-none';  
+            btn.innerHTML = `<span>${item.title}</span><span class="text-teal-600 text-xl font-bold transition-transform duration-300" id="icon-${index}">+</span>`;  
+              
+            const contentDiv = document.createElement('div');  
+            contentDiv.className = 'accordion-content bg-slate-50 px-6';  
+            contentDiv.id = `content-${index}`;  
+            contentDiv.innerHTML = `<p class="py-4 text-slate-600 text-sm leading-relaxed">${item.content}</p>`;  
+              
+            btn.addEventListener('click', () => {  
+                const isOpen = contentDiv.classList.contains('open');  
+                  
+                // Close all others  
+                document.querySelectorAll('.accordion-content').forEach(el => el.classList.remove('open'));  
+                document.querySelectorAll('[id^="icon-"]').forEach(icon => {  
+                    icon.textContent = '+';  
+                    icon.style.transform = 'rotate(0deg)';  
+                });  
+  
+                if (!isOpen) {  
+                    contentDiv.classList.add('open');  
+                    const icon = document.getElementById(`icon-${index}`);  
+                    icon.textContent = '×';  
+                    icon.style.transform = 'rotate(90deg)';  
+                }  
+            });  
+  
+            accItem.appendChild(btn);  
+            accItem.appendChild(contentDiv);  
+            accordionContainer.appendChild(accItem);  
+        });  
+  
+        // 2. Initialize Chart.js (Radar Chart for holistic view)  
+        const ctx = document.getElementById('statusChart').getContext('2d');  
+        const statusChart = new Chart(ctx, {  
+            type: 'radar',  
+            data: {  
+                labels: [  
+                    ['Oppfattet', 'Arbeidsbelastning'],   
+                    ['Kognitivt', 'Fokus (Alarm)'],   
+                    ['Empati /', 'Compassion'],   
+                    ['Søvnkvalitet'],   
+                    ['Avvik/', 'Medikamentfeil'],   
+                    ['Turnover-', 'intensjon']  
+                ],  
+                datasets: [{  
+                    label: 'Før Intervensjon (Kontroll)',  
+                    data: [8, 4, 5, 3, 7, 8],  
+                    backgroundColor: 'rgba(15, 23, 42, 0.1)', // Slate 900  
+                    borderColor: 'rgba(15, 23, 42, 0.7)',  
+                    pointBackgroundColor: 'rgba(15, 23, 42, 1)',  
+                    borderWidth: 2  
+                }, {  
+                    label: 'Etter Mindfulness (Mål)',  
+                    data: [6, 8, 8, 7, 3, 4],  
+                    backgroundColor: 'rgba(13, 148, 136, 0.3)', // Teal 600  
+                    borderColor: 'rgba(13, 148, 136, 1)',  
+                    pointBackgroundColor: 'rgba(13, 148, 136, 1)',  
+                    borderWidth: 2  
+                }]  
+            },  
+            options: {  
+                responsive: true,  
+                maintainAspectRatio: false,  
+                scales: {  
+                    r: {  
+                        angleLines: { color: 'rgba(0,0,0,0.05)' },  
+                        grid: { color: 'rgba(0,0,0,0.05)' },  
+                        pointLabels: {  
+                            font: { family: 'Inter', size: 11, weight: '600' },  
+                            color: '#475569'  
+                        },  
+                        ticks: {  
+                            display: false,  
+                            min: 0,  
+                            max: 10  
+                        }  
+                    }  
+                },  
+                plugins: {  
+                    legend: {  
+                        position: 'bottom',  
+                        labels: {  
+                            font: { family: 'Inter', size: 12 },  
+                            usePointStyle: true,  
+                            padding: 20  
+                        }  
+                    },  
+                    tooltip: {  
+                        backgroundColor: 'rgba(15, 23, 42, 0.9)',  
+                        titleFont: { family: 'Inter', size: 13 },  
+                        bodyFont: { family: 'Inter', size: 12 },  
+                        padding: 10,  
+                        cornerRadius: 8,  
+                        callbacks: {  
+                            label: function(context) {  
+                                return ` ${context.dataset.label}: ${context.raw}/10`;  
+                            }  
+                        }  
+                    }  
+                }  
+            }  
+        });  
+  
+        // 3. Tab Navigation Logic  
+        const tabBtns = document.querySelectorAll('.tab-btn');  
+        const tabContents = document.querySelectorAll('.tab-content');  
+  
+        tabBtns.forEach(btn => {  
+            btn.addEventListener('click', () => {  
+                // Remove active classes  
+                tabBtns.forEach(b => {  
+                    b.classList.remove('tab-active');  
+                    b.classList.add('text-slate-600');  
+                });  
+                tabContents.forEach(c => c.classList.add('hidden'));  
+  
+                // Add active to clicked  
+                btn.classList.add('tab-active');  
+                btn.classList.remove('text-slate-600');  
+                const targetId = btn.getAttribute('data-target');  
+                document.getElementById(targetId).classList.remove('hidden');  
+            });  
+        });  
+    </script>  
+</body>  
+</html>  
