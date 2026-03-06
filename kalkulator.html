@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Legemiddelkalkulator for intensivsykepleie">
+    <title>Legemiddelkalkulator — Jonas Arnesen</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-slate-50 font-sans text-slate-800 min-h-screen">
+
+    <!-- Navigasjon -->
+    <nav class="bg-slate-900 text-white">
+        <div class="max-w-3xl mx-auto px-4 py-4 flex items-center justify-between">
+            <a href="index.html" class="flex items-center gap-2 text-slate-300 hover:text-white transition-colors text-sm">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
+                </svg>
+                Tilbake
+            </a>
+            <span class="font-semibold text-white">Legemiddelkalkulator</span>
+            <span class="text-slate-400 text-sm">Intensivsykepleie</span>
+        </div>
+    </nav>
+
+    <main class="max-w-3xl mx-auto px-4 py-8">
+
+        <!-- Header -->
+        <div class="mb-8">
+            <h1 class="text-2xl font-bold text-slate-800 mb-1">Legemiddelkalkulator</h1>
+            <p class="text-slate-500 text-sm">Kliniske beregningsverktøy for intensivsykepleie</p>
+        </div>
+
+        <!-- Tabs -->
+        <div class="flex flex-wrap gap-2 mb-6" role="tablist">
+            <button role="tab" aria-selected="true" data-tab="dose-rate"
+                class="tab-btn px-4 py-2 rounded-xl text-sm font-medium transition-all bg-teal-600 text-white shadow-sm">
+                Dose μg/kg/min
+            </button>
+            <button role="tab" aria-selected="false" data-tab="bolus"
+                class="tab-btn px-4 py-2 rounded-xl text-sm font-medium transition-all bg-white text-slate-600 border border-slate-100 shadow-sm hover:bg-slate-50">
+                Bolusdose
+            </button>
+            <button role="tab" aria-selected="false" data-tab="infusion-rate"
+                class="tab-btn px-4 py-2 rounded-xl text-sm font-medium transition-all bg-white text-slate-600 border border-slate-100 shadow-sm hover:bg-slate-50">
+                Infusjonshastighet
+            </button>
+            <button role="tab" aria-selected="false" data-tab="dilution"
+                class="tab-btn px-4 py-2 rounded-xl text-sm font-medium transition-all bg-white text-slate-600 border border-slate-100 shadow-sm hover:bg-slate-50">
+                Utblanding
+            </button>
+            <button role="tab" aria-selected="false" data-tab="maintenance"
+                class="tab-btn px-4 py-2 rounded-xl text-sm font-medium transition-all bg-white text-slate-600 border border-slate-100 shadow-sm hover:bg-slate-50">
+                Vedlikeholdsdose
+            </button>
+        </div>
+
+        <!-- Tab panels -->
+
+        <!-- 1. Dose μg/kg/min -->
+        <div id="tab-dose-rate" class="tab-panel">
+            <div class="bg-white rounded-2xl shadow-sm border border-slate-100 p-6">
+                <h2 class="text-lg font-semibold text-slate-800 mb-1">Dose μg/kg/min</h2>
+                <p class="text-slate-500 text-sm mb-6">Beregner faktisk dose pasienten mottar basert på pumpens innstillinger.</p>
+                <div class="grid gap-4 sm:grid-cols-3 mb-6">
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 mb-1">Styrke (mg/ml)</label>
+                        <input type="number" id="dr-conc" min="0" step="any" placeholder="f.eks. 1"
+                            class="w-full px-3 py-2 rounded-xl border border-slate-200 text-slate-800 text-sm focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent transition">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 mb-1">Vekt (kg)</label>
+                        <input type="number" id="dr-weight" min="0" step="any" placeholder="f.eks. 70"
+                            class="w-full px-3 py-2 rounded-xl border border-slate-200 text-slate-800 text-sm focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent transition">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 mb-1">Pumpehastighet (ml/t)</label>
+                        <input type="number" id="dr-rate" min="0" step="any" placeholder="f.eks. 5"
+                            class="w-full px-3 py-2 rounded-xl border border-slate-200 text-slate-800 text-sm focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent transition">
+                    </div>
+                </div>
+                <div id="dr-error" class="hidden text-red-600 text-sm font-medium mb-4 bg-red-50 border border-red-100 rounded-xl px-4 py-2"></div>
+                <div id="dr-result" class="hidden bg-teal-50 border border-teal-100 rounded-xl px-5 py-4">
+                    <p class="text-xs text-teal-600 font-medium uppercase tracking-wide mb-1">Resultat</p>
+                    <p class="text-3xl font-bold text-teal-700" id="dr-result-val">—</p>
+                    <p class="text-sm text-teal-600 mt-1">μg/kg/min</p>
+                </div>
+                <p class="text-xs text-slate-400 mt-4">Formel: (styrke × 1000 × ml/t) / (vekt × 60)</p>
+            </div>
+        </div>
+
+        <!-- 2. Bolusdose -->
+        <div id="tab-bolus" class="tab-panel hidden">
+            <div class="bg-white rounded-2xl shadow-sm border border-slate-100 p-6">
+                <h2 class="text-lg font-semibold text-slate-800 mb-1">Bolusdose</h2>
+                <p class="text-slate-500 text-sm mb-6">Beregner total mengde og volum for en engangsdose.</p>
+                <div class="grid gap-4 sm:grid-cols-3 mb-6">
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 mb-1">Dose (mg/kg)</label>
+                        <input type="number" id="bo-dose" min="0" step="any" placeholder="f.eks. 0.1"
+                            class="w-full px-3 py-2 rounded-xl border border-slate-200 text-slate-800 text-sm focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent transition">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 mb-1">Vekt (kg)</label>
+                        <input type="number" id="bo-weight" min="0" step="any" placeholder="f.eks. 70"
+                            class="w-full px-3 py-2 rounded-xl border border-slate-200 text-slate-800 text-sm focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent transition">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 mb-1">Styrke (mg/ml)</label>
+                        <input type="number" id="bo-conc" min="0" step="any" placeholder="f.eks. 10"
+                            class="w-full px-3 py-2 rounded-xl border border-slate-200 text-slate-800 text-sm focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent transition">
+                    </div>
+                </div>
+                <div id="bo-error" class="hidden text-red-600 text-sm font-medium mb-4 bg-red-50 border border-red-100 rounded-xl px-4 py-2"></div>
+                <div id="bo-result" class="hidden bg-teal-50 border border-teal-100 rounded-xl px-5 py-4">
+                    <p class="text-xs text-teal-600 font-medium uppercase tracking-wide mb-2">Resultat</p>
+                    <div class="flex gap-8">
+                        <div>
+                            <p class="text-3xl font-bold text-teal-700" id="bo-result-mg">—</p>
+                            <p class="text-sm text-teal-600 mt-1">mg</p>
+                        </div>
+                        <div class="border-l border-teal-200 pl-8">
+                            <p class="text-3xl font-bold text-teal-700" id="bo-result-ml">—</p>
+                            <p class="text-sm text-teal-600 mt-1">ml</p>
+                        </div>
+                    </div>
+                </div>
+                <p class="text-xs text-slate-400 mt-4">Formel: mg = dose × vekt &nbsp;|&nbsp; ml = mg / styrke</p>
+            </div>
+        </div>
+
+        <!-- 3. Infusjonshastighet -->
+        <div id="tab-infusion-rate" class="tab-panel hidden">
+            <div class="bg-white rounded-2xl shadow-sm border border-slate-100 p-6">
+                <h2 class="text-lg font-semibold text-slate-800 mb-1">Infusjonshastighet</h2>
+                <p class="text-slate-500 text-sm mb-6">Beregner nødvendig pumpehastighet for ønsket dose.</p>
+                <div class="grid gap-4 sm:grid-cols-3 mb-6">
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 mb-1">Ønsket dose (μg/kg/min)</label>
+                        <input type="number" id="ir-dose" min="0" step="any" placeholder="f.eks. 5"
+                            class="w-full px-3 py-2 rounded-xl border border-slate-200 text-slate-800 text-sm focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent transition">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 mb-1">Vekt (kg)</label>
+                        <input type="number" id="ir-weight" min="0" step="any" placeholder="f.eks. 70"
+                            class="w-full px-3 py-2 rounded-xl border border-slate-200 text-slate-800 text-sm focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent transition">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 mb-1">Konsentrasjon (mg/ml)</label>
+                        <input type="number" id="ir-conc" min="0" step="any" placeholder="f.eks. 1"
+                            class="w-full px-3 py-2 rounded-xl border border-slate-200 text-slate-800 text-sm focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent transition">
+                    </div>
+                </div>
+                <div id="ir-error" class="hidden text-red-600 text-sm font-medium mb-4 bg-red-50 border border-red-100 rounded-xl px-4 py-2"></div>
+                <div id="ir-result" class="hidden bg-teal-50 border border-teal-100 rounded-xl px-5 py-4">
+                    <p class="text-xs text-teal-600 font-medium uppercase tracking-wide mb-1">Resultat</p>
+                    <p class="text-3xl font-bold text-teal-700" id="ir-result-val">—</p>
+                    <p class="text-sm text-teal-600 mt-1">ml/t</p>
+                </div>
+                <p class="text-xs text-slate-400 mt-4">Formel: (dose × vekt × 60) / (konsentrasjon × 1000)</p>
+            </div>
+        </div>
+
+        <!-- 4. Utblanding -->
+        <div id="tab-dilution" class="tab-panel hidden">
+            <div class="bg-white rounded-2xl shadow-sm border border-slate-100 p-6">
+                <h2 class="text-lg font-semibold text-slate-800 mb-1">Utblanding</h2>
+                <p class="text-slate-500 text-sm mb-6">Beregner konsentrasjonen etter utblanding av legemiddel.</p>
+                <div class="grid gap-4 sm:grid-cols-2 mb-6">
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 mb-1">Mengde legemiddel (mg)</label>
+                        <input type="number" id="di-amount" min="0" step="any" placeholder="f.eks. 250"
+                            class="w-full px-3 py-2 rounded-xl border border-slate-200 text-slate-800 text-sm focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent transition">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 mb-1">Totalvolum (ml)</label>
+                        <input type="number" id="di-volume" min="0" step="any" placeholder="f.eks. 50"
+                            class="w-full px-3 py-2 rounded-xl border border-slate-200 text-slate-800 text-sm focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent transition">
+                    </div>
+                </div>
+                <div id="di-error" class="hidden text-red-600 text-sm font-medium mb-4 bg-red-50 border border-red-100 rounded-xl px-4 py-2"></div>
+                <div id="di-result" class="hidden bg-teal-50 border border-teal-100 rounded-xl px-5 py-4">
+                    <p class="text-xs text-teal-600 font-medium uppercase tracking-wide mb-1">Resultat</p>
+                    <p class="text-3xl font-bold text-teal-700" id="di-result-val">—</p>
+                    <p class="text-sm text-teal-600 mt-1">mg/ml</p>
+                </div>
+                <p class="text-xs text-slate-400 mt-4">Formel: mg / ml</p>
+            </div>
+        </div>
+
+        <!-- 5. Vedlikeholdsdose -->
+        <div id="tab-maintenance" class="tab-panel hidden">
+            <div class="bg-white rounded-2xl shadow-sm border border-slate-100 p-6">
+                <h2 class="text-lg font-semibold text-slate-800 mb-1">Vedlikeholdsdose</h2>
+                <p class="text-slate-500 text-sm mb-6">Beregner infusjonshastighet for jevn tilførsel over tid.</p>
+                <div class="grid gap-4 sm:grid-cols-3 mb-6">
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 mb-1">Total mengde (mg)</label>
+                        <input type="number" id="ma-total" min="0" step="any" placeholder="f.eks. 500"
+                            class="w-full px-3 py-2 rounded-xl border border-slate-200 text-slate-800 text-sm focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent transition">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 mb-1">Styrke (mg/ml)</label>
+                        <input type="number" id="ma-conc" min="0" step="any" placeholder="f.eks. 10"
+                            class="w-full px-3 py-2 rounded-xl border border-slate-200 text-slate-800 text-sm focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent transition">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 mb-1">Timer (t)</label>
+                        <input type="number" id="ma-hours" min="0" step="any" placeholder="f.eks. 24"
+                            class="w-full px-3 py-2 rounded-xl border border-slate-200 text-slate-800 text-sm focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent transition">
+                    </div>
+                </div>
+                <div id="ma-error" class="hidden text-red-600 text-sm font-medium mb-4 bg-red-50 border border-red-100 rounded-xl px-4 py-2"></div>
+                <div id="ma-result" class="hidden bg-teal-50 border border-teal-100 rounded-xl px-5 py-4">
+                    <p class="text-xs text-teal-600 font-medium uppercase tracking-wide mb-1">Resultat</p>
+                    <p class="text-3xl font-bold text-teal-700" id="ma-result-val">—</p>
+                    <p class="text-sm text-teal-600 mt-1">ml/t</p>
+                </div>
+                <p class="text-xs text-slate-400 mt-4">Formel: (total / styrke) / timer</p>
+            </div>
+        </div>
+
+        <!-- Bunntekst -->
+        <div class="mt-8 bg-amber-50 border border-amber-100 rounded-2xl px-5 py-4 flex gap-3 items-start">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-amber-500 flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z" />
+            </svg>
+            <p class="text-amber-800 text-sm">Alltid dobbeltsjekk med gjeldende prosedyrer og faglig vurdering.</p>
+        </div>
+
+    </main>
+
+    <footer class="text-center text-slate-400 text-xs py-8">
+        &copy; 2026 Jonas Arnesen
+    </footer>
+
+    <script>
+        // --- Tab switching ---
+        const tabBtns = document.querySelectorAll('.tab-btn');
+        const tabPanels = document.querySelectorAll('.tab-panel');
+
+        tabBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const target = btn.dataset.tab;
+
+                tabBtns.forEach(b => {
+                    b.setAttribute('aria-selected', 'false');
+                    b.className = 'tab-btn px-4 py-2 rounded-xl text-sm font-medium transition-all bg-white text-slate-600 border border-slate-100 shadow-sm hover:bg-slate-50';
+                });
+
+                btn.setAttribute('aria-selected', 'true');
+                btn.className = 'tab-btn px-4 py-2 rounded-xl text-sm font-medium transition-all bg-teal-600 text-white shadow-sm';
+
+                tabPanels.forEach(p => p.classList.add('hidden'));
+                document.getElementById('tab-' + target).classList.remove('hidden');
+            });
+        });
+
+        // --- Helpers ---
+        function showError(id, msg) {
+            const el = document.getElementById(id);
+            el.textContent = msg;
+            el.classList.remove('hidden');
+        }
+        function hideError(id) {
+            document.getElementById(id).classList.add('hidden');
+        }
+        function showResult(id) {
+            document.getElementById(id).classList.remove('hidden');
+        }
+        function hideResult(id) {
+            document.getElementById(id).classList.add('hidden');
+        }
+        function fmt(n) {
+            // Up to 4 significant figures, trim trailing zeros
+            if (n === 0) return '0';
+            const s = parseFloat(n.toPrecision(4)).toString();
+            return s;
+        }
+        function getVal(id) {
+            const v = parseFloat(document.getElementById(id).value);
+            return isNaN(v) ? null : v;
+        }
+
+        // --- 1. Dose μg/kg/min ---
+        function calcDoseRate() {
+            const conc = getVal('dr-conc');
+            const weight = getVal('dr-weight');
+            const rate = getVal('dr-rate');
+
+            hideError('dr-error');
+            hideResult('dr-result');
+
+            if (conc === null || weight === null || rate === null) return;
+
+            if (conc <= 0) return showError('dr-error', 'Styrke må være større enn 0.');
+            if (weight <= 0) return showError('dr-error', 'Vekt må være større enn 0.');
+            if (rate < 0) return showError('dr-error', 'Pumpehastighet kan ikke være negativ.');
+
+            const result = (conc * 1000 * rate) / (weight * 60);
+            document.getElementById('dr-result-val').textContent = fmt(result);
+            showResult('dr-result');
+        }
+
+        ['dr-conc', 'dr-weight', 'dr-rate'].forEach(id => {
+            document.getElementById(id).addEventListener('input', calcDoseRate);
+        });
+
+        // --- 2. Bolusdose ---
+        function calcBolus() {
+            const dose = getVal('bo-dose');
+            const weight = getVal('bo-weight');
+            const conc = getVal('bo-conc');
+
+            hideError('bo-error');
+            hideResult('bo-result');
+
+            if (dose === null || weight === null || conc === null) return;
+
+            if (dose <= 0) return showError('bo-error', 'Dose må være større enn 0.');
+            if (weight <= 0) return showError('bo-error', 'Vekt må være større enn 0.');
+            if (conc <= 0) return showError('bo-error', 'Styrke må være større enn 0.');
+
+            const mg = dose * weight;
+            const ml = mg / conc;
+            document.getElementById('bo-result-mg').textContent = fmt(mg);
+            document.getElementById('bo-result-ml').textContent = fmt(ml);
+            showResult('bo-result');
+        }
+
+        ['bo-dose', 'bo-weight', 'bo-conc'].forEach(id => {
+            document.getElementById(id).addEventListener('input', calcBolus);
+        });
+
+        // --- 3. Infusjonshastighet ---
+        function calcInfusionRate() {
+            const dose = getVal('ir-dose');
+            const weight = getVal('ir-weight');
+            const conc = getVal('ir-conc');
+
+            hideError('ir-error');
+            hideResult('ir-result');
+
+            if (dose === null || weight === null || conc === null) return;
+
+            if (dose <= 0) return showError('ir-error', 'Dose må være større enn 0.');
+            if (weight <= 0) return showError('ir-error', 'Vekt må være større enn 0.');
+            if (conc <= 0) return showError('ir-error', 'Konsentrasjon må være større enn 0.');
+
+            const result = (dose * weight * 60) / (conc * 1000);
+            document.getElementById('ir-result-val').textContent = fmt(result);
+            showResult('ir-result');
+        }
+
+        ['ir-dose', 'ir-weight', 'ir-conc'].forEach(id => {
+            document.getElementById(id).addEventListener('input', calcInfusionRate);
+        });
+
+        // --- 4. Utblanding ---
+        function calcDilution() {
+            const amount = getVal('di-amount');
+            const volume = getVal('di-volume');
+
+            hideError('di-error');
+            hideResult('di-result');
+
+            if (amount === null || volume === null) return;
+
+            if (amount <= 0) return showError('di-error', 'Mengde legemiddel må være større enn 0.');
+            if (volume <= 0) return showError('di-error', 'Totalvolum må være større enn 0.');
+
+            const result = amount / volume;
+            document.getElementById('di-result-val').textContent = fmt(result);
+            showResult('di-result');
+        }
+
+        ['di-amount', 'di-volume'].forEach(id => {
+            document.getElementById(id).addEventListener('input', calcDilution);
+        });
+
+        // --- 5. Vedlikeholdsdose ---
+        function calcMaintenance() {
+            const total = getVal('ma-total');
+            const conc = getVal('ma-conc');
+            const hours = getVal('ma-hours');
+
+            hideError('ma-error');
+            hideResult('ma-result');
+
+            if (total === null || conc === null || hours === null) return;
+
+            if (total <= 0) return showError('ma-error', 'Total mengde må være større enn 0.');
+            if (conc <= 0) return showError('ma-error', 'Styrke må være større enn 0.');
+            if (hours <= 0) return showError('ma-error', 'Timer må være større enn 0.');
+
+            const result = (total / conc) / hours;
+            document.getElementById('ma-result-val').textContent = fmt(result);
+            showResult('ma-result');
+        }
+
+        ['ma-total', 'ma-conc', 'ma-hours'].forEach(id => {
+            document.getElementById(id).addEventListener('input', calcMaintenance);
+        });
+    </script>
+</body>
+</html>
