@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="MINA-200 studieressurser — YouTube-videoer og nøkkelkonsepter til eksamen">
+    <title>MINA-200 Studieressurser — Jonas Arnesen</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .page-header {
+            margin-bottom: var(--spacing-xl);
+            padding-bottom: var(--spacing-lg);
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            margin-bottom: var(--spacing-md);
+            transition: color 0.2s;
+        }
+
+        .back-link:hover { color: var(--accent-color); }
+
+        .page-title {
+            font-size: 1.75rem;
+            font-weight: 600;
+            letter-spacing: -0.02em;
+            margin-bottom: var(--spacing-xs);
+        }
+
+        .page-subtitle {
+            font-size: 1rem;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        .exam-notice {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: var(--spacing-sm);
+            padding: 6px 14px;
+            font-size: 0.8125rem;
+            font-weight: 500;
+            color: #c0392b;
+            background: #fdf2f2;
+            border: 1px solid #f5c6c6;
+            border-radius: 6px;
+        }
+
+        [data-theme="dark"] .exam-notice {
+            color: #ff8080;
+            background: rgba(255,80,80,0.08);
+            border-color: rgba(255,80,80,0.25);
+        }
+
+        /* INFOGRAPHIC CARD */
+        .feature-card {
+            padding: var(--spacing-md);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            margin-bottom: var(--spacing-xl);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: var(--spacing-md);
+            flex-wrap: wrap;
+            transition: all 0.2s;
+        }
+
+        .feature-card:hover {
+            border-color: var(--accent-color);
+            box-shadow: var(--shadow);
+        }
+
+        .feature-info { flex: 1; min-width: 200px; }
+
+        .feature-label {
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--accent-color);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 6px;
+        }
+
+        .feature-title {
+            font-size: 1.0625rem;
+            font-weight: 600;
+            margin-bottom: 6px;
+        }
+
+        .feature-desc {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+
+        .tag-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-top: 10px;
+        }
+
+        .tag {
+            font-size: 0.75rem;
+            padding: 2px 8px;
+            border-radius: 4px;
+            border: 1px solid var(--border-color);
+            color: var(--text-secondary);
+            background: var(--hover-bg);
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            text-decoration: none;
+            border-radius: 6px;
+            transition: all 0.2s;
+            white-space: nowrap;
+        }
+
+        .btn-primary {
+            background: var(--accent-color);
+            color: #fff;
+        }
+
+        .btn-primary:hover { opacity: 0.88; }
+
+        /* PRIORITY SECTION */
+        .priority-section {
+            margin-bottom: var(--spacing-xl);
+        }
+
+        .priority-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: var(--spacing-md);
+            padding-bottom: var(--spacing-xs);
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .priority-header h3 {
+            font-size: 1rem;
+            font-weight: 600;
+        }
+
+        .priority-badge {
+            font-size: 0.75rem;
+            padding: 2px 10px;
+            border-radius: 10px;
+            font-weight: 500;
+        }
+
+        .badge-red { background: #fdf2f2; color: #c0392b; }
+        .badge-orange { background: #fff8f0; color: #d4611a; }
+        [data-theme="dark"] .badge-red { background: rgba(255,80,80,0.12); color: #ff9090; }
+        [data-theme="dark"] .badge-orange { background: rgba(255,160,60,0.12); color: #ffb070; }
+
+        /* VIDEO ITEMS */
+        .video-list {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-sm);
+        }
+
+        .video-item {
+            padding: var(--spacing-md);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            transition: all 0.2s;
+            text-decoration: none;
+            color: inherit;
+            display: block;
+        }
+
+        .video-item:hover {
+            border-color: var(--accent-color);
+            box-shadow: var(--shadow);
+            transform: translateX(2px);
+        }
+
+        .video-topic {
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--accent-color);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 4px;
+        }
+
+        .video-title {
+            font-size: 0.9375rem;
+            font-weight: 600;
+            margin-bottom: 6px;
+            color: var(--text-color);
+        }
+
+        .video-meta {
+            display: flex;
+            gap: 14px;
+            flex-wrap: wrap;
+        }
+
+        .meta-item {
+            font-size: 0.8125rem;
+            color: var(--text-secondary);
+        }
+
+        .recommended {
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--accent-color);
+            margin-left: auto;
+        }
+
+        .video-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 8px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <div class="header-content">
+                <h1 class="name">Jonas Arnesen</h1>
+                <button class="theme-toggle" id="themeToggle" aria-label="Bytt tema">
+                    <span class="theme-icon">🌙</span>
+                </button>
+            </div>
+            <p class="tagline">Masterstudent i intensivsykepleie</p>
+        </header>
+
+        <main class="main">
+            <div class="page-header">
+                <a href="index.html" class="back-link">← Tilbake</a>
+                <h2 class="page-title">MINA-200 Studieressurser</h2>
+                <p class="page-subtitle">Kuraterte videoer og visuell oversikt over hva som faktisk testes på eksamen — basert på analyse av sensorveiledninger fra 2020 til 2024.</p>
+                <div class="exam-notice">⚠ Eksamen: 26. mars 2026 kl. 11:00</div>
+            </div>
+
+            <!-- INFOGRAPHIC -->
+            <section class="section">
+                <h2 class="section-title">Nøkkelkonsepter</h2>
+                <div class="feature-card">
+                    <div class="feature-info">
+                        <div class="feature-label">Blueprint infografikk</div>
+                        <div class="feature-title">Topp 5 eksamenstemaer — hva sensor ser etter</div>
+                        <div class="feature-desc">Analyse av sensorveiledningene fra 2020–2024 via NotebookLM. Viser temaer rangert etter frekvens, konkrete vurderingspunkter og en 18-dagers leseplan.</div>
+                        <div class="tag-row">
+                            <span class="tag">ARDS</span>
+                            <span class="tag">Legemiddelregning</span>
+                            <span class="tag">Sepsis</span>
+                            <span class="tag">Noradrenalin</span>
+                            <span class="tag">Hyponatremi</span>
+                            <span class="tag">Leversvikt</span>
+                            <span class="tag">CRRT</span>
+                        </div>
+                    </div>
+                    <a href="infografikk.html" class="btn btn-primary">Åpne →</a>
+                </div>
+            </section>
+
+            <!-- PRIORITET 1 VIDEOER -->
+            <section class="section priority-section">
+                <h2 class="section-title">YouTube-videoer</h2>
+
+                <div class="priority-header">
+                    <h3>Prioritet 1</h3>
+                    <span class="priority-badge badge-red">Alltid på eksamen</span>
+                </div>
+                <div class="video-list">
+
+                    <a href="https://youtube.com/watch?v=6nPufC7nKAg" target="_blank" class="video-item">
+                        <div class="video-header">
+                            <div class="video-topic">ARDS</div>
+                            <span class="recommended">★ Anbefalt</span>
+                        </div>
+                        <div class="video-title">Diagnosis and Management of Acute Respiratory Distress Syndrome (ARDS)</div>
+                        <div class="video-meta">
+                            <span class="meta-item">ICU Advantage</span>
+                            <span class="meta-item">27:34</span>
+                            <span class="meta-item">133 000 visninger</span>
+                        </div>
+                    </a>
+
+                    <a href="https://youtube.com/watch?v=bXWksu3APic" target="_blank" class="video-item">
+                        <div class="video-header">
+                            <div class="video-topic">ARDS</div>
+                        </div>
+                        <div class="video-title">Acute Respiratory Distress Syndrome (ARDS) | Clinical Medicine</div>
+                        <div class="video-meta">
+                            <span class="meta-item">Ninja Nerd</span>
+                            <span class="meta-item">38:06</span>
+                            <span class="meta-item">231 000 visninger</span>
+                        </div>
+                    </a>
+
+                    <a href="https://youtube.com/watch?v=V8uhJSd5NWQ" target="_blank" class="video-item">
+                        <div class="video-header">
+                            <div class="video-topic">ARDS — Rask oversikt</div>
+                        </div>
+                        <div class="video-title">Ventilatory Management in ARDS and Protective Lung Strategy</div>
+                        <div class="video-meta">
+                            <span class="meta-item">ICU REACH</span>
+                            <span class="meta-item">7:21</span>
+                        </div>
+                    </a>
+
+                </div>
+            </section>
+
+            <!-- PRIORITET 2 VIDEOER -->
+            <section class="section priority-section">
+                <div class="priority-header">
+                    <h3>Prioritet 2</h3>
+                    <span class="priority-badge badge-orange">Svært høy frekvens</span>
+                </div>
+                <div class="video-list">
+
+                    <a href="https://youtube.com/watch?v=DmJKEt0Iod8" target="_blank" class="video-item">
+                        <div class="video-header">
+                            <div class="video-topic">Sepsis / Septisk sjokk</div>
+                            <span class="recommended">★ Anbefalt</span>
+                        </div>
+                        <div class="video-title">Septic Shock | Shock (Part 8)</div>
+                        <div class="video-meta">
+                            <span class="meta-item">ICU Advantage</span>
+                            <span class="meta-item">23:05</span>
+                            <span class="meta-item">194 000 visninger</span>
+                        </div>
+                    </a>
+
+                    <a href="https://youtube.com/watch?v=ExJC8AoAczE" target="_blank" class="video-item">
+                        <div class="video-header">
+                            <div class="video-topic">Sepsis — Rask oversikt</div>
+                        </div>
+                        <div class="video-title">Septic Shock: Diagnosis and Treatment</div>
+                        <div class="video-meta">
+                            <span class="meta-item">Khan Academy Medicine</span>
+                            <span class="meta-item">7:51</span>
+                            <span class="meta-item">269 000 visninger</span>
+                        </div>
+                    </a>
+
+                    <a href="https://youtube.com/watch?v=zf28Rjbu3VM" target="_blank" class="video-item">
+                        <div class="video-header">
+                            <div class="video-topic">Noradrenalin / Vasopressorer</div>
+                            <span class="recommended">★ Anbefalt</span>
+                        </div>
+                        <div class="video-title">Vasopressors Explained Clearly: Norepinephrine, Epinephrine, Vasopressin, Dobutamine</div>
+                        <div class="video-meta">
+                            <span class="meta-item">MedCram</span>
+                            <span class="meta-item">13:03</span>
+                            <span class="meta-item">986 000 visninger</span>
+                        </div>
+                    </a>
+
+                    <a href="https://youtube.com/watch?v=ucEYIW9oI-A" target="_blank" class="video-item">
+                        <div class="video-header">
+                            <div class="video-topic">Vasopressorer — Dybde</div>
+                        </div>
+                        <div class="video-title">Vasopressors: Inodilators, Inopressors, Pure Vasopressors</div>
+                        <div class="video-meta">
+                            <span class="meta-item">Ninja Nerd</span>
+                            <span class="meta-item">1:26:25</span>
+                            <span class="meta-item">168 000 visninger</span>
+                        </div>
+                    </a>
+
+                </div>
+            </section>
+
+        </main>
+
+        <footer class="footer">
+            <p>&copy; 2026 Jonas Arnesen</p>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MINA-200 Eksamen — Nøkkelkonsepter</title>
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;600;700&family=Caveat+Brush&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background-color: #0d1f3c;
+    color: #c8dff5;
+    font-family: 'Caveat', cursive;
+    min-height: 100vh;
+    padding: 30px 20px;
+    background-image:
+      linear-gradient(rgba(100,160,255,0.07) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(100,160,255,0.07) 1px, transparent 1px);
+    background-size: 40px 40px;
+  }
+
+  .page {
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  /* HEADER */
+  .header {
+    text-align: center;
+    margin-bottom: 40px;
+    position: relative;
+  }
+
+  .header::before {
+    content: '';
+    display: block;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, #5baef7, transparent);
+    margin-bottom: 20px;
+  }
+
+  .header::after {
+    content: '';
+    display: block;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, #5baef7, transparent);
+    margin-top: 20px;
+  }
+
+  .header h1 {
+    font-family: 'Caveat Brush', cursive;
+    font-size: 2.8rem;
+    color: #ffffff;
+    letter-spacing: 2px;
+    text-shadow: 0 0 20px rgba(91,174,247,0.4);
+  }
+
+  .header .subtitle {
+    font-size: 1.3rem;
+    color: #7eb8f5;
+    margin-top: 6px;
+  }
+
+  .header .date-badge {
+    display: inline-block;
+    border: 1px dashed #5baef7;
+    padding: 4px 16px;
+    border-radius: 4px;
+    font-size: 1rem;
+    color: #ff9f5a;
+    margin-top: 10px;
+    letter-spacing: 1px;
+  }
+
+  /* CORNER DECORATIONS */
+  .corner {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    border-color: #5baef7;
+    border-style: solid;
+    opacity: 0.6;
+  }
+  .corner.tl { top: -8px; left: -8px; border-width: 2px 0 0 2px; }
+  .corner.tr { top: -8px; right: -8px; border-width: 2px 2px 0 0; }
+  .corner.bl { bottom: -8px; left: -8px; border-width: 0 0 2px 2px; }
+  .corner.br { bottom: -8px; right: -8px; border-width: 0 2px 2px 0; }
+
+  /* GRID LAYOUT */
+  .grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    margin-bottom: 24px;
+  }
+
+  .grid-3 {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 24px;
+    margin-bottom: 24px;
+  }
+
+  /* CARDS */
+  .card {
+    border: 1.5px solid rgba(91,174,247,0.4);
+    border-radius: 4px;
+    padding: 20px;
+    position: relative;
+    background: rgba(91,174,247,0.04);
+    transition: border-color 0.2s;
+  }
+
+  .card:hover {
+    border-color: rgba(91,174,247,0.8);
+    background: rgba(91,174,247,0.07);
+  }
+
+  .card .corner { opacity: 0.4; }
+
+  .priority-badge {
+    display: inline-block;
+    font-size: 0.85rem;
+    padding: 2px 10px;
+    border-radius: 3px;
+    margin-bottom: 8px;
+    letter-spacing: 1px;
+  }
+
+  .p1 .priority-badge { background: rgba(255,80,80,0.2); color: #ff8080; border: 1px solid rgba(255,80,80,0.4); }
+  .p2 .priority-badge { background: rgba(255,160,60,0.2); color: #ffb060; border: 1px solid rgba(255,160,60,0.4); }
+  .p3 .priority-badge { background: rgba(255,220,50,0.2); color: #ffd84a; border: 1px solid rgba(255,220,50,0.4); }
+
+  .card h2 {
+    font-family: 'Caveat Brush', cursive;
+    font-size: 1.5rem;
+    color: #ffffff;
+    margin-bottom: 12px;
+    border-bottom: 1px dashed rgba(91,174,247,0.3);
+    padding-bottom: 8px;
+  }
+
+  .card h2 .icon {
+    margin-right: 6px;
+  }
+
+  .points {
+    list-style: none;
+    padding: 0;
+  }
+
+  .points li {
+    font-size: 1.05rem;
+    padding: 5px 0 5px 20px;
+    position: relative;
+    line-height: 1.4;
+    color: #c8dff5;
+    border-bottom: 1px dotted rgba(91,174,247,0.15);
+  }
+
+  .points li:last-child {
+    border-bottom: none;
+  }
+
+  .points li::before {
+    content: '→';
+    position: absolute;
+    left: 0;
+    color: #5baef7;
+    font-weight: bold;
+  }
+
+  .highlight {
+    color: #ffd84a;
+    font-weight: 600;
+  }
+
+  .red-highlight {
+    color: #ff9090;
+    font-weight: 600;
+  }
+
+  /* FORMULA BOX */
+  .formula-box {
+    background: rgba(91,174,247,0.1);
+    border: 1.5px solid rgba(91,174,247,0.5);
+    border-radius: 4px;
+    padding: 12px 16px;
+    text-align: center;
+    margin-top: 10px;
+    font-family: 'Caveat Brush', cursive;
+    font-size: 1.4rem;
+    color: #ffffff;
+    letter-spacing: 2px;
+  }
+
+  /* WIDE CARD */
+  .card.wide {
+    grid-column: span 2;
+  }
+
+  .card.full {
+    grid-column: span 3;
+  }
+
+  /* STUDY SCHEDULE */
+  .schedule {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    margin-top: 10px;
+  }
+
+  .week {
+    border: 1px dashed rgba(91,174,247,0.4);
+    border-radius: 4px;
+    padding: 10px;
+  }
+
+  .week h4 {
+    font-family: 'Caveat Brush', cursive;
+    font-size: 1.1rem;
+    color: #7eb8f5;
+    margin-bottom: 6px;
+    border-bottom: 1px dotted rgba(91,174,247,0.3);
+    padding-bottom: 4px;
+  }
+
+  .week p {
+    font-size: 0.95rem;
+    line-height: 1.6;
+    color: #a0c4e8;
+  }
+
+  /* TIPS */
+  .tips-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    margin-top: 10px;
+  }
+
+  .tip {
+    border: 1px dashed rgba(255,159,90,0.4);
+    border-radius: 4px;
+    padding: 10px;
+    text-align: center;
+    background: rgba(255,159,90,0.05);
+  }
+
+  .tip .tip-icon {
+    font-size: 1.6rem;
+    display: block;
+    margin-bottom: 4px;
+  }
+
+  .tip p {
+    font-size: 0.95rem;
+    color: #ffd0a0;
+    line-height: 1.4;
+  }
+
+  /* FOOTER */
+  .footer {
+    text-align: center;
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 1px dashed rgba(91,174,247,0.3);
+    font-size: 0.9rem;
+    color: rgba(91,174,247,0.5);
+  }
+
+  /* STAMP */
+  .stamp {
+    display: inline-block;
+    border: 2px solid rgba(255,90,90,0.5);
+    color: rgba(255,90,90,0.5);
+    font-family: 'Caveat Brush', cursive;
+    font-size: 1.1rem;
+    padding: 4px 14px;
+    border-radius: 4px;
+    transform: rotate(-3deg);
+    letter-spacing: 2px;
+    margin-left: 10px;
+  }
+
+  /* ANNOTATION */
+  .annotation {
+    font-size: 0.9rem;
+    color: rgba(91,174,247,0.5);
+    font-style: italic;
+    margin-top: 6px;
+  }
+
+  .arrow-note {
+    font-size: 0.95rem;
+    color: #ff9f5a;
+    margin-top: 8px;
+    padding-left: 10px;
+    border-left: 2px solid rgba(255,159,90,0.4);
+  }
+
+  @media (max-width: 768px) {
+    .grid, .grid-3 { grid-template-columns: 1fr; }
+    .card.wide, .card.full { grid-column: span 1; }
+    .tips-grid { grid-template-columns: repeat(2, 1fr); }
+    .schedule { grid-template-columns: 1fr; }
+    .header h1 { font-size: 2rem; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="corner tl"></div>
+    <div class="corner tr"></div>
+    <div class="corner bl"></div>
+    <div class="corner br"></div>
+    <h1>MINA-200 — Nøkkelkonsepter</h1>
+    <div class="subtitle">Basert på sensorveiledninger 2020 · 2021 · 2023 · 2024</div>
+    <div class="date-badge">⚠ EKSAMEN: 26. MARS 2026</div>
+  </div>
+
+  <!-- ROW 1: ARDS + LEGEMIDDELREGNING -->
+  <div class="grid">
+
+    <!-- ARDS -->
+    <div class="card p1">
+      <div class="corner tl"></div><div class="corner tr"></div>
+      <div class="corner bl"></div><div class="corner br"></div>
+      <span class="priority-badge">🔴 PRIORITET 1 — ALLTID PÅ EKSAMEN</span>
+      <h2><span class="icon">🫁</span> ARDS</h2>
+      <ul class="points">
+        <li><span class="highlight">3 faser:</span> Eksudativ → Fibroproliferativ → Fibrotisk</li>
+        <li><span class="highlight">Berlin-kriterier:</span> PaO₂/FiO₂ ≤ 26,7 kPa (mild/moderat/alvorlig)</li>
+        <li><span class="highlight">Respirator:</span> Tidalvolum 6 ml/kg IBW · Topptrykk &lt;30 cmH₂O · PEEP opp</li>
+        <li>Permissiv hyperkapni · Bukleie · Sedasjon + evt. relaxasjon</li>
+        <li><span class="highlight">V/Q:</span> Alveoleskade = shunting (V/Q&lt;1) · Kapillærskade = dødrom (V/Q&gt;1)</li>
+      </ul>
+      <p class="annotation">↑ Har stått på ALLE 4 eksamener som stor oppgave (20–25 pt)</p>
+    </div>
+
+    <!-- LEGEMIDDELREGNING -->
+    <div class="card p1">
+      <div class="corner tl"></div><div class="corner tr"></div>
+      <div class="corner bl"></div><div class="corner br"></div>
+      <span class="priority-badge">🔴 PRIORITET 1 — ALLTID PÅ EKSAMEN</span>
+      <h2><span class="icon">🧮</span> Legemiddelregning</h2>
+      <ul class="points">
+        <li><span class="red-highlight">VIS ALLTID utregningen</span> — delpoeng selv ved feil svar</li>
+        <li>Grunnformel: <span class="highlight">S × M = D</span> (styrke × mengde = dose)</li>
+        <li>Konverter: mg → μg · ml/t → μg/kg/min og tilbake</li>
+        <li>Utblanding: ny konsentrasjon etter tilsetting i bag</li>
+        <li>Bolusdose vs. vedlikeholdsdose</li>
+      </ul>
+      <div class="formula-box">S × M = D</div>
+      <div class="arrow-note">Eks: Noradrenalin 0,1 mg/ml, 12 ml/t, 80 kg → 0,25 μg/kg/min</div>
+    </div>
+
+  </div>
+
+  <!-- ROW 2: SEPSIS + NORADRENALIN + HYPONATREMI -->
+  <div class="grid-3">
+
+    <!-- SEPSIS -->
+    <div class="card p2">
+      <div class="corner tl"></div><div class="corner tr"></div>
+      <div class="corner bl"></div><div class="corner br"></div>
+      <span class="priority-badge">🟠 PRIORITET 2</span>
+      <h2><span class="icon">🦠</span> Sepsis / Septisk sjokk</h2>
+      <ul class="points">
+        <li>Definisjon: MAP &lt;65 + Laktat &gt;2 mmol/L til tross for væske</li>
+        <li><span class="highlight">Varm sjokk</span> → høy CO, lav SVR → <span class="highlight">Kald sjokk</span> → kapillærlekkasje, sviktende CO</li>
+        <li>Behandling: Blodkultur → Antibiotika → Væske 30 ml/kg → Noradrenalin</li>
+        <li>Mål: MAP &gt;65 · Laktat &lt;2 · Diurese &gt;0,5 ml/kg/t</li>
+      </ul>
+    </div>
+
+    <!-- NORADRENALIN -->
+    <div class="card p2">
+      <div class="corner tl"></div><div class="corner tr"></div>
+      <div class="corner bl"></div><div class="corner br"></div>
+      <span class="priority-badge">🟠 PRIORITET 2</span>
+      <h2><span class="icon">💉</span> Noradrenalin</h2>
+      <ul class="points">
+        <li>Reseptorer: <span class="highlight">alfa-1/2</span> (vasokonstriksjon) + beta-1 (mild inotropi)</li>
+        <li>Øker SVR og MAP · liten effekt på HR</li>
+        <li><span class="red-highlight">OBS:</span> Acidose (pH&lt;7,2) → redusert alfa-sensitivitet</li>
+        <li>Monitorering: MAP · Diurese · Hudfarge · Kapillærfylning · Laktat</li>
+        <li>Dose: 0,05–0,4 μg/kg/min</li>
+      </ul>
+    </div>
+
+    <!-- HYPONATREMI -->
+    <div class="card p2">
+      <div class="corner tl"></div><div class="corner tr"></div>
+      <div class="corner bl"></div><div class="corner br"></div>
+      <span class="priority-badge">🟠 PRIORITET 2</span>
+      <h2><span class="icon">🧂</span> Hyponatremi</h2>
+      <ul class="points">
+        <li>Normal: 136–146 mmol/L · Alvorlig: &lt;120 mmol/L</li>
+        <li>Årsaker: overhydrering, SIADH, salttap, diuretika, hyperglykemi</li>
+        <li>Fare: hjerneødem ved akutt fall → kramper, koma</li>
+        <li><span class="red-highlight">MAKS 10 mmol/L/døgn</span> — osmotisk myelinolyse!</li>
+        <li>Akutt alvorlig: 1–2 mmol/L/time de første 3–4 timene</li>
+      </ul>
+    </div>
+
+  </div>
+
+  <!-- ROW 3: LEVERSVIKT + CRRT + CNS -->
+  <div class="grid-3">
+
+    <!-- LEVERSVIKT -->
+    <div class="card p3">
+      <div class="corner tl"></div><div class="corner tr"></div>
+      <div class="corner bl"></div><div class="corner br"></div>
+      <span class="priority-badge">🟡 PRIORITET 3</span>
+      <h2><span class="icon">🫀</span> Leversvikt</h2>
+      <ul class="points">
+        <li>Koagulasjon: ↓ faktorer · ↑ INR · trombocytopeni · fibrinolyse</li>
+        <li>Sirkulasjon: hyperdynamisk · høy CO · lav SVR (NO-mediert)</li>
+        <li>CNS: hyperammonemi → hjerneødem → herniering</li>
+        <li>Blodsvar: ↑ transaminaser, ↑ bilirubin, ↑ laktat</li>
+        <li>Behandling: CRRT (ammoniakk), noradrenalin/vasopressin</li>
+      </ul>
+    </div>
+
+    <!-- CRRT -->
+    <div class="card p3">
+      <div class="corner tl"></div><div class="corner tr"></div>
+      <div class="corner bl"></div><div class="corner br"></div>
+      <span class="priority-badge">🟡 PRIORITET 3</span>
+      <h2><span class="icon">🔄</span> CRRT</h2>
+      <ul class="points">
+        <li>Indikasjoner: akutt nyresvikt, hyperammonemi, overhydrering, acidose</li>
+        <li>Modaliteter: CVVH (konveksjon) · CVVHDF (konveksjon + diffusjon)</li>
+        <li>Tekniske komplikasjoner: filterkoagulasjon · luftemboli · hypotensjon</li>
+        <li>Antikoagulasjon: heparin eller citrat</li>
+      </ul>
+    </div>
+
+    <!-- CNS -->
+    <div class="card p3">
+      <div class="corner tl"></div><div class="corner tr"></div>
+      <div class="corner bl"></div><div class="corner br"></div>
+      <span class="priority-badge">🟡 PRIORITET 3</span>
+      <h2><span class="icon">🧠</span> CNS-svikt / ↑ICP</h2>
+      <ul class="points">
+        <li>Cushings triade: bradykardi · hypertensjon · unormal respirasjon</li>
+        <li>GCS · pupillerespons · tegn på herniering</li>
+        <li>CPP = MAP − ICP · mål CPP &gt;60 mmHg</li>
+        <li>Behandling: normoventilasjon · CSF-drenasje · temperaturkontroll · sedasjon</li>
+      </ul>
+    </div>
+
+  </div>
+
+  <!-- ROW 4: STUDIEPLAN + TIPS -->
+  <div class="grid">
+
+    <!-- STUDIEPLAN -->
+    <div class="card">
+      <div class="corner tl"></div><div class="corner tr"></div>
+      <div class="corner bl"></div><div class="corner br"></div>
+      <h2><span class="icon">📅</span> 18 dager igjen</h2>
+      <div class="schedule">
+        <div class="week">
+          <h4>Uke 1 (dag 1–7)</h4>
+          <p>ARDS<br>Sepsis / septisk sjokk<br>Noradrenalin<br>Legemiddelregning ✏️</p>
+        </div>
+        <div class="week">
+          <h4>Uke 2 (dag 8–14)</h4>
+          <p>Hyponatremi<br>Leversvikt<br>CRRT<br>CNS / ICP</p>
+        </div>
+        <div class="week">
+          <h4>Uke 3 (dag 15–18)</h4>
+          <p>KUN TESTING<br>Eksamensoppgaver<br>Tidspress-øvelse<br>Lett rep. + tidlig i seng</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- EKSAMENSTIPS -->
+    <div class="card">
+      <div class="corner tl"></div><div class="corner tr"></div>
+      <div class="corner bl"></div><div class="corner br"></div>
+      <h2><span class="icon">🎯</span> Eksamenstips</h2>
+      <div class="tips-grid">
+        <div class="tip">
+          <span class="tip-icon">📝</span>
+          <p>Bruk <strong>egne ord</strong> — sensor vil se forståelse, ikke sitater</p>
+        </div>
+        <div class="tip">
+          <span class="tip-icon">🧮</span>
+          <p>VIS alltid <strong>utregning</strong> — delpoeng for metode</p>
+        </div>
+        <div class="tip">
+          <span class="tip-icon">⏱</span>
+          <p>4 oppgaver · 60 min per oppgave — <strong>fordel jevnt</strong></p>
+        </div>
+        <div class="tip">
+          <span class="tip-icon">🏥</span>
+          <p>Koble til <strong>klinisk relevans</strong> der det er mulig</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- FOOTER -->
+  <div class="footer">
+    Analyse: NotebookLM + MINA-200 sensorveiledninger 2020–2024 · Winston 🎩
+    <span class="stamp">KONFIDENSIELT</span>
+  </div>
+
+</div>
+</body>
+</html>
